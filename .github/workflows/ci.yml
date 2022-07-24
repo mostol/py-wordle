@@ -1,4 +1,4 @@
-name: Programming Assignment 2 check
+name: PyWordle check
 
 on:
   push:
@@ -9,8 +9,8 @@ on:
 jobs:
   test:
     env:
-      ORG: "uazhlt"
-      IMAGE_NAME: "ling-508-pa-week2"
+      ORG: "mostol"
+      IMAGE_NAME: "py-wordle"
       TAG: "latest"
     runs-on: ubuntu-latest
     steps:
