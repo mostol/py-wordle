@@ -5,6 +5,7 @@ import mysql.connector
 class MysqlRepository(Repository):
 
     def __init__(self):
+        super().__init__()
         config = {
             'user': 'root',
             'password': 'root',
