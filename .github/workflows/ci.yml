@@ -19,6 +19,9 @@ jobs:
       - name: Build the docker image
         run: |
           docker build . --file Dockerfile --tag ${ORG}/${IMAGE_NAME}:${TAG}
+      - name: Pauzen, heel eventjes
+        run: |
+          sleep 30
       - name: Run the tests
         run: |
           docker run -i ${ORG}/${IMAGE_NAME}:${TAG} python -m pytest tests
