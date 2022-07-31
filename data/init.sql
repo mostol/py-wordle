@@ -7,6 +7,11 @@ CREATE TABLE lexicon (
     PRIMARY KEY (id)
 );
 
-LOAD DATA LOCAL INFILE "/docker-entrypoint-initdb.d/wordlist.txt" 
-    INTO TABLE lexicon
-    (word);
+INSERT INTO lexicon
+    (word)
+VALUES
+    ("niche");
+
+#LOAD DATA LOCAL INFILE "/docker-entrypoint-initdb.d/wordlist.txt" 
+#    INTO TABLE lexicon
+#    (word);
