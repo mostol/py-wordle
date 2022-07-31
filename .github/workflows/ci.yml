@@ -13,15 +13,26 @@ jobs:
       IMAGE_NAME: "py-wordle"
       TAG: "latest"
     runs-on: ubuntu-latest
+    
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: root
+        ports:
+          - 32000:3306
+        volumes:
+          - ./data:/docker-entrypoint-initdb.d/:ro
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=10s --health-retries=10
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build the docker image
         run: |
           docker build . --file Dockerfile --tag ${ORG}/${IMAGE_NAME}:${TAG}
-      - name: Pauzen, heel eventjes
-        run: |
-          sleep 30
       - name: Run the tests
         run: |
-          docker run -i ${ORG}/${IMAGE_NAME}:${TAG} python -m pytest tests
+          docker run -i --network ${{ job.services.mysql.network }} ${ORG}/${IMAGE_NAME}:${TAG} python -m pytest tests
+          
