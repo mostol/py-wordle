@@ -4,3 +4,4 @@ venv/
 tests/.pytest_cache/
 tests/__pycache__/
 app/__pycache__/
+db/__pycache__/
