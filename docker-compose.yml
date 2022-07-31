@@ -4,7 +4,9 @@ services:
     build: .
     links:
       - db
-    command: ["sleep", "20"]
+    depends-on:
+      - db
+    command: ["sleep", "60"]
 
   db:
     image: mysql:5.7
