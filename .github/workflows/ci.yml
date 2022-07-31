@@ -23,6 +23,9 @@ jobs:
       - name: Compose
         run: |
           docker compose up -d
+      - name: Wait...
+        run: |
+          sleep 30s
       - name: Run the tests
         run: |
           docker run -i ${ORG}/${IMAGE_NAME}:${TAG} python -m pytest tests
