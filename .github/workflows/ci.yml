@@ -32,7 +32,7 @@ jobs:
           docker build . --file Dockerfile --tag ${ORG}/${IMAGE_NAME}:${TAG}
       - name: Compose
         run: |
-          docker compose up
+          docker compose up && sleep 20s
       - name: Run the tests
         run: |
           docker run -i ${ORG}/${IMAGE_NAME}:${TAG} python -m pytest tests
