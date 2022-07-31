@@ -21,7 +21,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: root
         ports:
-          - 3306:3306
+          - 32000:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=10s --health-retries=10
     
     steps:
@@ -30,7 +30,10 @@ jobs:
       - name: Build the docker image
         run: |
           docker build . --file Dockerfile --tag ${ORG}/${IMAGE_NAME}:${TAG}
+      - name: Compose
+        run: |
+          docker compose up
       - name: Run the tests
         run: |
-          docker run -i --network ${{ job.services.mysql.network }} ${ORG}/${IMAGE_NAME}:${TAG} python -m pytest tests
+          docker run -i ${ORG}/${IMAGE_NAME}:${TAG} python -m pytest tests
           
