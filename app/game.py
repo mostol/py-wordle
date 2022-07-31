@@ -10,9 +10,9 @@ class PositionState(Enum):
 
 class Game:
 
-    def __init__(self, state, lexicon):
-        self.state = state
+    def __init__(self, lexicon, state=None):
         self.lexicon = lexicon
+        self.state = state
 
         # `characters` could probably be abstracted to not just use the English alphabet.
         self.letters = Enum("Letter", [*string.ascii_uppercase])
@@ -32,7 +32,3 @@ class GameState:
 
     # def from_guesses(self):
         # Create a `GameState` from guesses.
-
-
-def get_lexicon(file):
-    return [line.strip() for line in open(file)]

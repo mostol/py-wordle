@@ -1,11 +1,11 @@
 from app.game import *
+from db.mysql_repository import *
 import pytest
 
 
-# Tests go here. This is just a filler :)
-def test_wordlist():
-    lexicon = get_lexicon("wordlist.txt")
+def test_game():
+    database = MysqlRepository()
+    lexicon = database.load_lexicon()
+    game = Game(lexicon)
 
-    assert isinstance(lexicon, list)
-    assert isinstance(lexicon[0], str)
-    assert lexicon[0] == "cigar"
+    assert isinstance(game, Game)
