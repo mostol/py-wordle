@@ -8,8 +8,8 @@ class MysqlRepository(Repository):
         super().__init__()
         config = {
             'user': 'root',
-            'password': 'root',
-            'host': 'mysql',  # default: 'db'. Local: 'localhost'.
+            # 'password': 'root',
+            'host': 'db',  # default: 'db'. Local: 'localhost'.
             'port': '3306',  # Default: '3306'. Local: '32000'.
             'database': 'wordle'
         }
