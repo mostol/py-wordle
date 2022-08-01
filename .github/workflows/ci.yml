@@ -30,6 +30,9 @@ jobs:
       - name: Build the docker image
         run: |
           docker build . --file Dockerfile --tag ${ORG}/${IMAGE_NAME}:${TAG}
+      - name: Start MySQL
+        run: |
+          sudo /etc/init.d/mysql start
       - name: Run the tests
         run: |
           docker run -i --network ${{ job.services.mysql.network }} ${ORG}/${IMAGE_NAME}:${TAG} python -m pytest tests
