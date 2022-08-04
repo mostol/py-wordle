@@ -10,7 +10,7 @@ class MysqlRepository(Repository):
             'user': 'root',
             'password': 'root',
             'host': 'db',  # default: 'db'. Local: 'localhost'.
-            'port': '32000',  # Default: '3306'. Local: '32000'.
+            'port': '3306',  # Default: '3306'. Local: '32000'.
             'database': 'wordle'
         }
         self.connection = mysql.connector.connect(**config)
