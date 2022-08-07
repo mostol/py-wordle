@@ -24,4 +24,4 @@ class MysqlRepository(Repository):
         sql = 'SELECT * FROM lexicon'
         self.cursor.execute(sql)
 
-        return [word for (id,word) in self.cursor]
+        return [word for id, word in self.cursor]
