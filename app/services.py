@@ -20,3 +20,8 @@ class Services:
     # think that any guess is just as good as any other.
     def get_best_guess(self):
         return self.game.get_best_guess()
+
+
+# Service layer as entrypoint?
+if __name__ == "__main__":
+    services = Services()
