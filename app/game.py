@@ -53,7 +53,18 @@ class GameState:
     # is a list of one-letter strings that says which color each letter in the string was
     # (either `"g"` (green), `"y"` (yellow), or `"b"` (black/gray).
     def __init__(self, guesses=None):
-        self.game_state = defaultdict(dict)
+        # !Update! `game_state` is now a dict of positions (plus "absent"), which map to
+        # sets of letters. These letters indicate possibilities (or "known"s).
+        # But wait! The "if it's not in the set, it's not possible" angle does throw a small
+        # wrench in flexibility, because then we'd need to explicitly list un-guessed letters (meaning
+        # we'd need a list of all possible letters beforehand).
+        #
+        # We'll also have a "present" set, for yellow letters. The rationale here is that
+        # we want to quickly check if a word matches the criteria, and the value that yellow
+        # letters gives us is that it tells us a letter *must* be in the word somewhere. That filters
+        # out a lot of words, potentially, but it's cumbersome to notate that within the individual position
+        # entries.
+        self.game_state = {defaultdict(set)}
 
         if guesses is not None:
             # For fun, we'll keep a list of what the guesses were.
@@ -67,20 +78,23 @@ class GameState:
                     raise ValueError("Number of letters and number of states do not match.")
 
                 for pos, (letter, state) in enumerate(zip(*guess)):
-                    letter_dict = self.game_state[letter]  # (To avoid repetition)
+                    pos_set = self.game_state[pos]  # (To avoid repetition)
                     if state.lower() == "g":
-                        # We know that this position has this letter in it, for sure.
-                        letter_dict.update({pos: True})
+                        # We know that this position has this letter in it, for sure,
+                        # and
+                        pos_set.clear.add(letter)
                         # (However, that says nothing about that letter in other positions of the word, btw.)
                     elif state.lower() == "b":
-                        # We know this letter is not in *any* position. Set all positions to `False`
-                        # (aside from positions we already know it's in).
-                        letter_dict.update({i: False for i in range(len(letter_states)) if i not in letter_dict})
+                        # We know this letter is not in *any* position.
+                        # (Aside from positions we already know it's in.)
+                        self.game_state["missing"].add(letter)
                     elif state.lower() == "y":
                         # We know this letter is not in *this* position.
-                        letter_dict.update({pos: False})
-                        # We know it's somewhere else in the word, but...we already have an implicit
-                        # "maybe" for all the other positions because they aren't `False`.
+                        pos_set.add(letter)
+                        # We know it's somewhere else in the word, though.
+                        for position, contents in set(self.game_state).difference([pos,"absent"]):
+                            contents.add(letter)
+
                     else:
                         raise ValueError("Unknown letter state encountered. Should be 'g', 'y', or 'b'.")
         else:
@@ -131,4 +145,12 @@ class GameState:
     # isn't in the word (which is also a common thing to happen, most letters are *not* part of the word).
     # It also makes it easy to tell which letter's haven't been guessed yet (they'll just not be in the dict).
     #
-    # It *does* make it a little harder to...<to be continued>
+    # It *does* make it a little harder to deal with the case when we *know* a letter/position combo. When that
+    # happens, we want to be able to mark that letter/position combo as `True`, but if that's the case, we also
+    # definitively know that all other letters in that position are also `False`. So maybe we really do need to
+    # index by position. If we did that, we could set a `defaultdict` or something so that all other letters
+    # default to `False`.
+    #
+    # One possibility would be to have "external" info, like a datastructure that says whether a letter is
+    # in the word, or whether a position is known or not.
+    #
