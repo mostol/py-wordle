@@ -2,7 +2,7 @@
 A [Wordle](https://www.nytimes.com/games/wordle/index.html) solution-generator in Python, initially built for LING508 in the University of Arizona HLT program.
 
 ## Use cases
-- [ ] Users can provide a game state (i.e. which letters have already been guessed and what the results were), and the best solution will be returned.
+- [X] Users can provide a game state (i.e. which letters have already been guessed and what the results were), and the best solution will be returned.
     * *Input*: Game state
     * *Output*: The optimal guess to make (based on known possible solutions)
 - [ ] If a blank game state is provided, the best "first guess" is returned.
