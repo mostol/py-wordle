@@ -25,58 +25,80 @@ https://github.com/jjberry-508/sanskrit-508/blob/week6/web/sanskrit.html
 <form id="input" action="http://127.0.0.1:5000/" method="POST">
     <fieldset>
         <legend>Guess 1</legend>
-        <label for="word">Word (5 letters):</label>
-        <input type="text" id="word" name="word" required minlength="5" maxlength="5" size="5">
+        <label for="word1">Word (5 letters):</label>
+        <input type="text" id="word1" name="word1" required minlength="5" maxlength="5" size="5">
 
         <label>Letter colors:</label>
-        <select name="ch1.1">
+        <select name="val1">
             <option value="b">Black</option>
             <option value="y">Yellow</option>
             <option value="g">Green</option>
         </select>
-        <select name="ch1.2">
+        <select name="val1">
             <option value="b">Black</option>
             <option value="y">Yellow</option>
             <option value="g">Green</option>
         </select>
-        <select name="ch1.3">
+        <select name="val1">
             <option value="b">Black</option>
             <option value="y">Yellow</option>
             <option value="g">Green</option>
         </select>
-        <select name="ch1.4">
+        <select name="val1">
             <option value="b">Black</option>
             <option value="y">Yellow</option>
             <option value="g">Green</option>
         </select>
-        <select name="ch1.5">
+        <select name="val1">
             <option value="b">Black</option>
             <option value="y">Yellow</option>
             <option value="g">Green</option>
         </select>
     </fieldset>
     <div>
-        <button>Submit</button>
+        <button type="submit" value="guess">Submit</button>
     </div>
 </form>
 <p>(…multi-guess input in development)</p>
 
 <h2>Result:</h2>
-<output form="input" name="output">
-    ???
-</output>
+<pre id="response"></pre>
 
 </body>
 <script>
-async function handleSubmit1(event) {
+async function handleSubmit(event) {
+
+    function fancyArrayObject(dataPairs) {
+        function toVal(arr) {
+            // Returns an array if the input is more than one element.
+            if (arr.length > 1) {
+                return arr;
+            } else {
+                // Otherwise just returns the element itself.
+                return arr.pop();
+            }
+        }
+
+        const uniques = new Set()
+
+        for (const pair of dataPairs) {
+            uniques.add(pair[0]) // Add the first element of each pair (i.e., the field's name)
+        }
+
+        // Object from either repeated or one-off form items. It's converted to an array, then an object.
+        const obj = Object.fromEntries(Array.from(uniques,entry => [entry,toVal(dataPairs.getAll(entry))]));
+
+        return obj
+    }
+
     event.preventDefault();
 
     const data = new FormData(event.target);
-    const value = Object.fromEntries(data.entries());
-    value.word = data.get("word");
-    console.log({value});
+    const value = fancyArrayObject(data);
+    console.log("Input data:")
+    console.log(value);
 
-    const response = await fetch('http://localhost:5000/parse', {
+    const response = await fetch('http://localhost:5000/guess', {
         method: 'POST',
         body: JSON.stringify(value),
         headers: {
@@ -84,32 +106,12 @@ async function handleSubmit1(event) {
             }
         });
     const myJson = await response.json();
+    console.log("Response:");
     console.log(myJson);
-    document.getElementById('response').textContent = JSON.stringify(myJson, undefined, 2);
+    // the use of `myJson.result` is hard-coded in app.py (the return value of the `best_guess` function).
+    document.getElementById('response').textContent = myJson.result;
 }
-const form1 = document.getElementById("form1");
-form1.addEventListener("submit", async (e) => handleSubmit1(e), false);
-
-async function handleSubmit2(event) {
-    event.preventDefault();
-
-    const data = new FormData(event.target);
-    const value = Object.fromEntries(data.entries());
-    value.compound = data.get("compound");
-    console.log({value});
-
-    const response = await fetch('http://localhost:5000/segment', {
-        method: 'POST',
-        body: JSON.stringify(value),
-        headers: {
-            'Content-Type': 'application/json',
-            }
-        });
-    const myJson = await response.json();
-    console.log(myJson);
-    document.getElementById('segments').textContent = JSON.stringify(myJson, undefined, 2);
-}
-const form2 = document.getElementById("form2");
-form2.addEventListener("submit", async (e) => handleSubmit2(e), false);
+const form = document.getElementById("input");
+form.addEventListener("submit", async (e) => handleSubmit(e), false);
 </script>
 </html>
