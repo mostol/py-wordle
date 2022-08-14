@@ -16,6 +16,8 @@ word but not in this position), and `b` (black; the letter is not in the word).
 
 The word and the status list must be the same length. 
 
+Output is a single word.
+
 ### Web UI
 Using `web/py-wordle.html`, you can input a guess via a snazzy web-based interface. Type in your word, then use
 the dropdown menus to select the status/color of each letter in the word. Hit `Submit` to get your result, (which
@@ -33,6 +35,8 @@ The word/status pair must be formatted as JSON, where the word has the key `word
 array with key `val1` and each color/status is either `"b"`, `"g"`, or `"y"`. The header should 
 be `Content-Type: application/json`.
 
+A JSON response is returned, containing the best-guess word.
+
 #### Example
 A `curl` request:
 
@@ -41,6 +45,11 @@ curl --header "Content-Type: application/json" \
   --request POST \
   --data '{"word1":"hello","val1":["b","g","g","g","g"]}' \
   http://localhost:5000/guess
+```
+
+Result:
+```json
+{"result": "jello"}
 ```
 
 ## Empty game best guess
