@@ -16,11 +16,10 @@ services = Services()
 @cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
 def best_guess():
     data = request.get_json()
-    # print(data)
-    #
-    # services.add_guesses()
+    services.add_guesses([(data["word1"], data["val1"])])
+    guess = services.get_best_guess()
 
-    return jsonify(data["word"])
+    return jsonify({"result": guess})
 
 
 if __name__ == "__main__":

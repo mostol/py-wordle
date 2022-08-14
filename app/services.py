@@ -12,6 +12,7 @@ class Services:
 
     # Use Case 1: User can start a game with a specific game state, based on existing guesses and
     # the associated results.
+    # Expects a list of tuples.
     def add_guesses(self, guesses):
         self.game.add_guesses(guesses)
 
