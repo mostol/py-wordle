@@ -15,7 +15,6 @@ def test_connection():
 
 
 def test_results():
-    headers = {'Content-Type': "application/json"}
     r = requests.post("http://localhost:5000/guess",
                       json={"word1": "hello", "val1": ["b", "g", "g", "g", "g"]})
     result = r.json["result"]
