@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PyWordle - Guess generator</title>
+</head>
+<body>
+<h1>PyWordle guess generator</h1>
+
+<h2>What's the sitch?</h2>
+<p>
+    Input the current game state by providing any words you've guessed so far,
+ along with the color of each letter in the guesses.
+</p>
+
+<p>
+    Guess(es) are optional. If no guesses are provided, we'll try to return
+    the best initial guess.
+</p>
+
+<form id="input" action="http://www.foo.com" method="GET">
+    <fieldset>
+        <legend>Guess 1</legend>
+        <label for="word">Word (5 letters):</label>
+        <input type="text" id="word" name="word" required minlength="5" maxlength="5" size="5">
+
+        <label>Letter colors:</label>
+        <select name="ch1.1">
+            <option value="b">Black</option>
+            <option value="y">Yellow</option>
+            <option value="g">Green</option>
+        </select>
+        <select name="ch1.2">
+            <option value="b">Black</option>
+            <option value="y">Yellow</option>
+            <option value="g">Green</option>
+        </select>
+        <select name="ch1.3">
+            <option value="b">Black</option>
+            <option value="y">Yellow</option>
+            <option value="g">Green</option>
+        </select>
+        <select name="ch1.4">
+            <option value="b">Black</option>
+            <option value="y">Yellow</option>
+            <option value="g">Green</option>
+        </select>
+        <select name="ch1.5">
+            <option value="b">Black</option>
+            <option value="y">Yellow</option>
+            <option value="g">Green</option>
+        </select>
+    </fieldset>
+    <div>
+        <button>Submit</button>
+    </div>
+</form>
+<p>(…multi-guess input in development)</p>
+
+</body>
+</html>
