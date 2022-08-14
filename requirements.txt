@@ -2,3 +2,4 @@ pytest
 mysql-connector
 Flask
 flask-cors
+requests
