@@ -2,14 +2,21 @@ version: "2"
 services:
   app:
     build: .
-    links:
-      - db
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
 
   db:
     image: mysql:5.7
-    ports:
-      - "32000:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - ./data:/docker-entrypoint-initdb.d/:ro
+    healthcheck:
+      test: curl --fail http://localhost:3306 || exit 1
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 10s
